@@ -13,6 +13,7 @@ if cmp(a, b) returns  0, then a == b.
 import random
 
 def cmp_standard(a, b):
+    
     '''
     used for sorting from lowest to highest
 
@@ -57,6 +58,29 @@ def cmp_last_digit(a, b):
 
 
 def _merged(xs, ys, cmp=cmp_standard):
+    zs = []
+    i = 0
+    j = 0
+    while i < len(xs) and j < len(ys):
+        if cmp(xs[i], ys[j]) == -1:
+            zs.append(xs[i])
+            i += 1
+        if cmp(xs[i], ys[j]) == 0:
+            zs.append(xs[i])
+            zs.append(ys[j])
+        else:
+            zs.append(ys[j])
+            j += 1
+    while i < len(xs):
+        zs.append(xs[i])
+        i += 1
+    while j < len(ys):
+        zs.append(ys[j])
+        j += 1
+    return zs
+
+    
+    
     '''
     Assumes that both xs and ys are sorted,
     and returns a new list containing the elements of both xs and ys.
@@ -78,8 +102,15 @@ def _merged(xs, ys, cmp=cmp_standard):
     [1, 2, 3, 4, 5, 6]
     '''
 
-
 def merge_sorted(xs, cmp=cmp_standard):
+    if len(xs) <= 1:
+        return xs
+    else:
+        mid = len(xs) // 2
+        left = xs[:mid]
+        right = xs[mid:]
+        return _merged(merge_sorted(left), merge_sorted(right))
+
     '''
     Merge sort is the standard O(n log n) sorting algorithm.
     Recall that the merge sort pseudo code is:
@@ -98,6 +129,14 @@ def merge_sorted(xs, cmp=cmp_standard):
 
 
 def quick_sorted(xs, cmp=cmp_standard):
+    if len(xs) <= 1:
+        return xs
+    mid = len(xs) // 2
+    pivot = xs[mid]
+    xs_smaller = [x for x in xs if x< pivot]
+    xs_bigger = [x for x in xs if x > pivot]
+    xs_equal = [x for x in xs if x == pivot]
+    return quick_sorted(xs_smaller) + xs_equal + quick_sorted(xs_greater)
     '''
     Quicksort is like mergesort,
     but it uses a different strategy to split the list.
