@@ -62,9 +62,6 @@ def _merged(xs, ys, cmp=cmp_standard):
         if cmp(xs[i], ys[j]) == -1:
             zs.append(xs[i])
             i += 1
-        if cmp(xs[i], ys[j]) == 0:
-            zs.append(xs[i])
-            zs.append(ys[j])
         else:
             zs.append(ys[j])
             j += 1
